@@ -1,0 +1,221 @@
+<?php
+
+function generateEmployeeId()
+{
+    $firstDigit = rand(1, 9);
+    $remainingDigits = '';
+    for ($i = 0; $i < 8; $i++) {
+        $remainingDigits .= rand(0, 9);
+    }
+    $numberString = $firstDigit . $remainingDigits;
+    return $numberString;
+}
+
+class method_stmt
+{
+    private $ConDB;
+
+    public function __construct()
+    {
+        $con = new ConDB();
+        $con->connect();
+        $this->ConDB = $con->conn;
+    }
+
+    public function loginManager($username, $password)
+    {
+        $sql = "SELECT `username` FROM `managers` WHERE `username` = :username AND `password` = :password";
+        $query = $this->ConDB->prepare($sql);
+        $query->bindParam(":username", $username);
+        $query->bindParam(":password", $password);
+        if ($query->execute()) {
+            $result = $query->fetch(PDO::FETCH_ASSOC);
+            return $result;
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public function loginEmployee($id, $password)
+    {
+        $sql = "SELECT `id` FROM `employees` WHERE `id` = :id AND `password` = :password";
+        $query = $this->ConDB->prepare($sql);
+        $query->bindParam(":id", $id);
+        $query->bindParam(":password", $password);
+        if ($query->execute()) {
+            $result = $query->fetch(PDO::FETCH_ASSOC);
+            return $result;
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public function editEmployee($id, $fname, $lname, $nick_name, $wage_per_date, $num_of_work_date, $num_of_ot_hours, $ot_per_hour, $shift_fee)
+    {
+        $sql = "UPDATE `employees` 
+            SET `fname` = :fname, `lname` = :lname, `nick_name` = :nick_name, 
+                `wage_per_date` = :wage_per_date, `num_of_work_date` = :num_of_work_date, 
+                `num_of_ot_hours` = :num_of_ot_hours, `ot_per_hour` = :ot_per_hour, 
+                `shift_fee` = :shift_fee , `ot_summary` = :ot_summary , `total_salary` = :total_salary
+            WHERE `id` = :id"; 
+        $query = $this->ConDB->prepare($sql);
+        $query->bindParam(":id", $id);
+        $query->bindParam(":fname", $fname);
+        $query->bindParam(":lname", $lname);
+        $query->bindParam(":nick_name", $nick_name);
+        $wage_per_date = floatval($wage_per_date);
+        $num_of_work_date = floatval($num_of_work_date);
+        $num_of_ot_hours = floatval($num_of_ot_hours);
+        $ot_per_hour = floatval($ot_per_hour);
+        $shift_fee = floatval($shift_fee);
+     
+        $query->bindParam(":wage_per_date", $wage_per_date);
+        $query->bindParam(":num_of_work_date", $num_of_work_date);
+        $query->bindParam(":num_of_ot_hours", $num_of_ot_hours);
+        $query->bindParam(":ot_per_hour", $ot_per_hour);
+        $query->bindParam(":shift_fee", $shift_fee);
+        $ot_summary = $ot_per_hour * $num_of_ot_hours;
+        $total_salary =  $wage_per_date * $num_of_work_date + $ot_per_hour * $num_of_ot_hours + $shift_fee;
+        $query->bindParam(":ot_summary", $ot_summary);
+        $query->bindParam(":total_salary", $total_salary);
+        if ($query->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public function editEmployeeContact($id, $fname, $lname, $nick_name, $phone_number,$line,$email)
+    {
+        $sql = "UPDATE `employees` 
+            SET `fname` = :fname, `lname` = :lname, `nick_name` = :nick_name, 
+                `phone_number` = :phone_number, `line` = :line, 
+                `email` = :email WHERE `id` = :id"; 
+        $query = $this->ConDB->prepare($sql);
+        $query->bindParam(":id", $id);
+        $query->bindParam(":fname", $fname);
+        $query->bindParam(":lname", $lname);
+        $query->bindParam(":nick_name", $nick_name);
+        $query->bindParam(":phone_number", $phone_number);
+        $query->bindParam(":line", $line);
+        $query->bindParam(":email", $email);
+        if ($query->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public function editEmployeeBankAccount($id, $fname, $lname, $nick_name, $bank_account,$bank_account_number)
+    {
+        $sql = "UPDATE `employees` 
+            SET `fname` = :fname, `lname` = :lname, `nick_name` = :nick_name, 
+                `bank_account` = :bank_account, 
+                `bank_account_number` = :bank_account_number WHERE `id` = :id"; 
+        $query = $this->ConDB->prepare($sql);
+        $query->bindParam(":id", $id);
+        $query->bindParam(":fname", $fname);
+        $query->bindParam(":lname", $lname);
+        $query->bindParam(":nick_name", $nick_name);
+        $query->bindParam(":bank_account", $bank_account);
+        $query->bindParam(":bank_account_number", $bank_account_number);
+        if ($query->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public function addEmployee($fname, $lname, $nick_name, $password)
+    {
+        $id = generateEmployeeId();
+        $sql = "INSERT INTO `employees` (`id`,`fname`,`lname`,`nick_name`,`password`)
+            VALUES (:id,:fname,:lname,:nick_name,:password)";
+        $query = $this->ConDB->prepare($sql);
+        $query->bindParam(":id", $id);
+        $query->bindParam(":fname", $fname);
+        $query->bindParam(":lname", $lname);
+        $query->bindParam(":nick_name", $nick_name);
+        $query->bindParam(":password", $password);
+        if ($query->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function getEmployeeById($id)
+    {
+        $sql = "SELECT * FROM `employees` WHERE `id` = :id";
+        $query = $this->ConDB->prepare($sql);
+        $query->bindParam(":id", $id , PDO::PARAM_INT);
+        if ($query->execute()) {
+            $result = $query->fetch(PDO::FETCH_ASSOC);
+            return $result;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function getAllAnnounces()
+    {
+        $sql = "SELECT * FROM `announces`";
+        $query = $this->ConDB->prepare($sql);
+        if ($query->execute()) {
+            $result = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function addAnnounce($announce)
+    {
+        $sql = "INSERT INTO `announces` (`announce`)
+            VALUES (:announce)";
+        $query = $this->ConDB->prepare($sql);
+        $query->bindParam(":announce", $announce);
+        if ($query->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function getAllEmployees()
+    {
+        $sql = "SELECT * FROM `employees`";
+        $query = $this->ConDB->prepare($sql);
+        if ($query->execute()) {
+            $result = $query->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public function deleteEmployee($id){
+        $sql = "DELETE FROM `employees` WHERE `id` = :id";
+        $query = $this->ConDB->prepare($sql);
+        $query->bindParam(":id", $id);
+        if ($query->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public function deleteAnnounce($id){
+        $sql = "DELETE FROM `announces` WHERE `id` = :id";
+        $query = $this->ConDB->prepare($sql);
+        $query->bindParam(":id", $id);
+        if ($query->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+?>

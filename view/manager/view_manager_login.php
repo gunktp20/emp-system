@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <?php
     session_start();
-
-    if(isset($_SESSION['logged_in']) && isset($_SESSION['manager'])){
-        header("location: ./view_employees.php");
-    }else if(isset($_SESSION['logged_in']) && isset($_SESSION['employee'])){
-        header("location: ./view_employee_info.php");
+    
+    if(isset($_SESSION['logged_in']) && isset($_SESSION['is_employee'])){
+        return header("location: ../employee/view_employee_info.php");
     }
+    if(isset($_SESSION['logged_in']) && isset($_SESSION['is_manager'])){
+        return header("location: ../manager/view_employees.php");
+    }
+
 ?>
 
 <html lang="en">
@@ -46,6 +48,7 @@
                 <input placeholder="รหัสผ่านเข้าสู่ระบบ" name="password" class="form-input-login" type="text">
                 <button type="submit" class="login-submit-btn" name="login_manager">เข้าสู่ระบบ</button>
             </form>
+
             <div class="toggle-endpoint">
                 สลับไปยัง การเข้าสู่ระบบของ
                 <a href="../employee/view_employee_login.php" class="toggle-login-form">

@@ -2,8 +2,12 @@
 
 session_start();
 
-if (empty($_SESSION['logged_in']) || empty($_SESSION['is_employee'])) {
-  header("location: ./view_manager_login.php");
+if (empty($_SESSION['logged_in'])) {
+  return header("location: ./view_employee_login.php");
+}
+
+if(isset($_SESSION['logged_in']) && isset($_SESSION['is_manager'])){
+  return header("location: ../manager/view_employees.php");
 }
 
 include_once "../../model/connect.php";
@@ -181,12 +185,12 @@ $announces = $obj->getAllAnnounces();
 
       <div class="emp-info">
         <div class="emp-key">ยอดรวมทั้งหมด</div>
-        <div><?php echo $employee['ot_summary']; ?></div>
+        <div><?php echo $employee['total_salary']; ?></div>
       </div>
 
       <a class="logout-menu" href="../../controller/logout_controller.php">
         ออกจากระบบ
-      </a>
+      </a>  
     </div>
   </div>
 

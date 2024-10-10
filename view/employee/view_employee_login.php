@@ -4,9 +4,16 @@
 
     if(isset($_SESSION['logged_in']) && isset($_SESSION['is_employee'])){
         header("location: ./view_employee_info.php");
-    }else if(isset($_SESSION['logged_in']) && isset($_SESSION['is_employee'])){
-        header("location: ./view_employee_info.php");
     }
+    if(isset($_SESSION['logged_in']) && isset($_SESSION['is_manager'])){
+        header("location: ../manager/view_employees.php");
+    }
+
+    // if(isset($_SESSION['logged_in']) && isset($_SESSION['is_employee'])){
+    //     header("location: ./view_employee_info.php");
+    // }else if(isset($_SESSION['logged_in']) && isset($_SESSION['is_employee'])){
+    //     header("location: ./view_employee_info.php");
+    // }
 ?>
 
 <html lang="en">

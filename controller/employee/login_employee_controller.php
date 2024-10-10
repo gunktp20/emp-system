@@ -18,13 +18,14 @@
             $_SESSION['error'] = "กรุณากรอก รหัสผ่าน";
             header("location: ../../view/employee/view_employee_login.php"); 
             return;
-        }else{
+        }else{ 
             $result = $obj->loginEmployee($id,$password);
             if($result == true){
                 $_SESSION['logged_in'] = true;
                 $_SESSION['is_employee'] = $id;
                 header("location: ../../view/employee/view_employee_info.php"); 
             }else{
+                $_SESSION['error'] = "หมายเลขพนักงาน หรือ รหัสผ่านไม่ถูกต้อง";
                 header("location: ../../view/employee/view_employee_login.php"); 
             }
         }

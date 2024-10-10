@@ -1,10 +1,13 @@
 <?php
 session_start();
 
-if (empty($_SESSION['logged_in']) || empty($_SESSION['is_manager'])) {
-    header("location: ./view_manager_login.php");
+if (empty($_SESSION['logged_in'])) {
+    return header("location: ../employee/view_employee_login.php");
 }
 
+if (isset($_SESSION['logged_in']) && isset($_SESSION['is_employee'])) {
+    return header("location: ../employee/view_employee_info.php");
+}
 
 include_once "../../model/connect.php";
 include_once "../../model/method_stmt.php";

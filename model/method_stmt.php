@@ -36,6 +36,7 @@ class method_stmt
             return false;
         }
     }
+    
     public function loginEmployee($id, $password)
     {
         $sql = "SELECT `id` FROM `employees` WHERE `id` = :id AND `password` = :password";

@@ -23,9 +23,10 @@
             if($result == true){
                 $_SESSION['logged_in'] = true;
                 $_SESSION['is_manager'] = true;
-                header("location: ../../view/manager/view_employees.php"); 
+                header("location: ../../view/manager/view_manager_login.php"); 
             }else{
-                header("location: ../../view/manager/view_employees.php"); 
+                $_SESSION['error'] = "ชื่อผู้ใช้ หรือ รหัสผ่านไม่ถูกต้อง";
+                header("location: ../../view/manager/view_manager_login.php"); 
             }
         }
 

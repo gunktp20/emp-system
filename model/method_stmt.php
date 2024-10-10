@@ -1,5 +1,5 @@
 <?php
-
+// function ในการสุ่มเลข 9 ตัว
 function generateEmployeeId()
 {
     $firstDigit = rand(1, 9);
@@ -21,7 +21,7 @@ class method_stmt
         $con->connect();
         $this->ConDB = $con->conn;
     }
-
+    // การ Login สำหรับ Manager
     public function loginManager($username, $password)
     {
         $sql = "SELECT `username` FROM `managers` WHERE `username` = :username AND `password` = :password";
@@ -36,7 +36,7 @@ class method_stmt
             return false;
         }
     }
-    
+    // เข้าสู่ระบบสำหรับพนักงาน
     public function loginEmployee($id, $password)
     {
         $sql = "SELECT `id` FROM `employees` WHERE `id` = :id AND `password` = :password";
@@ -51,7 +51,7 @@ class method_stmt
             return false;
         }
     }
-    
+    // แก้ไขข้อมูลพนักงาน โดยรับข้อมูลใหม่มา และ id เพื่อบอกว่าจะอัพเดทข้อมูลไหน
     public function editEmployee($id, $fname, $lname, $nick_name, $wage_per_date, $num_of_work_date, $num_of_ot_hours, $ot_per_hour, $shift_fee)
     {
         $sql = "UPDATE `employees` 
@@ -86,6 +86,7 @@ class method_stmt
             return false;
         }
     }
+    // อัพเดทข้อมูลช่องทางติดต่อของพนักงาน
     public function editEmployeeContact($id, $fname, $lname, $nick_name, $phone_number,$line,$email)
     {
         $sql = "UPDATE `employees` 
@@ -106,6 +107,7 @@ class method_stmt
             return false;
         }
     }
+    // อัพเดทข้อมูลบัญชีธนาคารของพนักงาน
     public function editEmployeeBankAccount($id, $fname, $lname, $nick_name, $bank_account,$bank_account_number)
     {
         $sql = "UPDATE `employees` 
@@ -125,7 +127,7 @@ class method_stmt
             return false;
         }
     }
-    
+    // เพิ่มข้อมูลพนักงาน
     public function addEmployee($fname, $lname, $nick_name, $password)
     {
         $id = generateEmployeeId();
@@ -143,7 +145,7 @@ class method_stmt
             return false;
         }
     }
-
+    // เรียกดูข้อมูลพนักงาน
     public function getEmployeeById($id)
     {
         $sql = "SELECT * FROM `employees` WHERE `id` = :id";
@@ -156,8 +158,8 @@ class method_stmt
         } else {
             return false;
         }
-    }
-
+    }   
+    // เรียกดูข้อมูลข่าวสารทั้งหมด
     public function getAllAnnounces()
     {
         $sql = "SELECT * FROM `announces`";
@@ -170,7 +172,7 @@ class method_stmt
             return false;
         }
     }
-
+    // เพิ่มข้อมูลข่าวสารใหม่
     public function addAnnounce($announce)
     {
         $sql = "INSERT INTO `announces` (`announce`)
@@ -183,7 +185,7 @@ class method_stmt
             return false;
         }
     }
-
+    // เรียกดูข้อมูลพนักงานทั้งหมด
     public function getAllEmployees()
     {
         $sql = "SELECT * FROM `employees`";
@@ -196,7 +198,7 @@ class method_stmt
             return false;
         }
     }
-    
+    // ลบข้อมูลพนักงาน
     public function deleteEmployee($id){
         $sql = "DELETE FROM `employees` WHERE `id` = :id";
         $query = $this->ConDB->prepare($sql);
@@ -207,6 +209,7 @@ class method_stmt
             return false;
         }
     }
+    // ลบข่าวสารที่ประกาศ
     public function deleteAnnounce($id){
         $sql = "DELETE FROM `announces` WHERE `id` = :id";
         $query = $this->ConDB->prepare($sql);

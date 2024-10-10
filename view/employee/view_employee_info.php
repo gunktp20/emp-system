@@ -17,8 +17,9 @@ $obj = new method_stmt();;
 
 $employee_id = $_SESSION["is_employee"];
 
+// เรียกดูข้อมูลพนักงานเพื่อแสดงให้พนักงาน
 $employee = $obj->getEmployeeById($employee_id);
-
+// เรียกดูข่าวสารทั้งหมดเพื่อแสดงให้พนักงาน
 $announces = $obj->getAllAnnounces();
 ?>
 

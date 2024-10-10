@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <?php
     session_start();
-
+    
+    //ตรวจสอบว่าผู้ใช้เข้าสู่ระบบแล้วหรือไม่ ถ้าเข้าสู่ระบบแล้วจะไปยังหน้าดูข้อมูลของพนักงาน
     if(isset($_SESSION['logged_in']) && isset($_SESSION['is_employee'])){
         header("location: ./view_employee_info.php");
     }
@@ -9,11 +10,6 @@
         header("location: ../manager/view_employees.php");
     }
 
-    // if(isset($_SESSION['logged_in']) && isset($_SESSION['is_employee'])){
-    //     header("location: ./view_employee_info.php");
-    // }else if(isset($_SESSION['logged_in']) && isset($_SESSION['is_employee'])){
-    //     header("location: ./view_employee_info.php");
-    // }
 ?>
 
 <html lang="en">
@@ -34,6 +30,7 @@
             </div>
             <div class="note">ลงชื่อเข้าสู่ระบบสำหรับพนักงาน</div>
             <div class="underline"></div>
+            <!-- แสดงข้อความ Error -->
             <?php
             if (isset($_SESSION['error'])) {
                 ?>

@@ -2,6 +2,7 @@
 <?php
     session_start();
     
+    // ถ้าผู้ใช้เข้าสู่ระบบอยู่ จะให้ไปหน้าของผู้ หากเป็น พนักงานก็ไปหน้าดูข้อมูลส่วนตัว หากเป็น manager ให้ไปหน้าจัดการข้อมูลพนักงาน
     if(isset($_SESSION['logged_in']) && isset($_SESSION['is_employee'])){
         return header("location: ../employee/view_employee_info.php");
     }

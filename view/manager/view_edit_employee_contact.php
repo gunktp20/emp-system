@@ -1,13 +1,14 @@
 <?php
 session_start();
 
+// ถ้ายังไม่ได้ Login ให้กลับไปหน้า Login
 if (empty($_SESSION['logged_in'])) {
     return header("location: ../employee/view_employee_login.php");
-}
-
-if (isset($_SESSION['logged_in']) && isset($_SESSION['is_employee'])) {
+  }
+  // หากเข้าสู่ระบบแล้วแต่ไม่ได้เป็น manager ให้ไปหน้าดูข้อมูลส่วนตัวของพนักงาน
+  if (isset($_SESSION['logged_in']) && isset($_SESSION['is_employee'])) {
     return header("location: ../employee/view_employee_info.php");
-}
+  }
 
 
 include_once "../../model/connect.php";
@@ -17,6 +18,7 @@ $obj = new method_stmt();;
 
 $employee_id = $_GET['id'];
 
+// เรียกดูข้อมูลปัจจุบันของพนักงานก่อน เพื่อจะได้รู้ว่าข้อมูลปัจจุบันเป็นอะไรก่อนจะแก้ไข
 $employee = $obj->getEmployeeById($employee_id);
 
 ?>

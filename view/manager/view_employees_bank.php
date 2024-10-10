@@ -2,10 +2,11 @@
 
 session_start();
 
+// ถ้ายังไม่ได้ Login ให้กลับไปหน้า Login
 if (empty($_SESSION['logged_in'])) {
   return header("location: ../employee/view_employee_login.php");
 }
-
+// หากเข้าสู่ระบบแล้วแต่ไม่ได้เป็น manager ให้ไปหน้าดูข้อมูลส่วนตัวของพนักงาน
 if (isset($_SESSION['logged_in']) && isset($_SESSION['is_employee'])) {
   return header("location: ../employee/view_employee_info.php");
 }
@@ -14,6 +15,7 @@ include_once "../../model/connect.php";
 include_once "../../model/method_stmt.php";
 
 $obj = new method_stmt();
+// เรียกดูข้อมูลพนักงานทั้งหมด
 $result2 = $obj->getAllEmployees();
 $no = 1
 ?>
